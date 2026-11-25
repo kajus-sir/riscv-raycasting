@@ -15,3 +15,39 @@ void draw_rect(int start_x, int start_y, int width, int height, unsigned char co
         }
     }
 }
+
+int get_sw(void){
+  volatile int *sw = (volatile int *) 0x04000010;
+  return *sw;
+}
+
+int get_btn(void){
+  volatile int *btn = (volatile int *) 0x040000d0;
+  return *btn;
+}
+
+void set_leds(int led_mask) {
+  volatile int *leds = (volatile int *) 0x04000000;
+  *leds = led_mask;
+}
+
+void set_displays(int display_number, int value){
+  volatile int *display = (volatile int *) ((display_number * 0x00000010) + 0x04000050);
+  *display = value;
+}
+
+int digit_to_segments(int digit) {
+    switch (digit) {
+        case 0: return 0xC0;   // 0b11000000
+        case 1: return 0xF9;   // 0b11111001
+        case 2: return 0xA4;   // 0b10100100
+        case 3: return 0xB0;   // 0b10110000
+        case 4: return 0x99;   // 0b10011001
+        case 5: return 0x92;   // 0b10010010
+        case 6: return 0x82;   // 0b10000010
+        case 7: return 0xF8;   // 0b11111000
+        case 8: return 0x80;   // 0b10000000
+        case 9: return 0x90;   // 0b10010000
+        default: return 0xFF;  // all segments off (blank)
+    }
+}
