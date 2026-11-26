@@ -17,3 +17,12 @@ void draw_map(void) {
         }
     }
 }
+
+void draw_column(int x, int height, unsigned char color) {
+    int draw_start = (SCREEN_H - height) / 2;
+    int draw_end   = draw_start + height;
+
+    draw_vline(x, 0, draw_start, CEILING_COLOR);
+    draw_vline(x, draw_start, draw_end, color);
+    draw_vline(x, draw_end, SCREEN_H, FLOOR_COLOR);
+}

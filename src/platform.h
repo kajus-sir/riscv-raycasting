@@ -6,5 +6,6 @@
 
 void pixel(int x, int y, unsigned char color);
 void draw_rect(int start_x, int start_y, int width, int height, unsigned char color);
+void draw_vline(int x, int start_y, int end_y, unsigned char color);
 
 #endif
