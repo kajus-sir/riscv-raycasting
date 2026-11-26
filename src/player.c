@@ -1,7 +1,7 @@
 // Ansvar: Kajus + Hugo
 
-#include "player.h"
 #include "map.h"
+#include "player.h"
 
 #define MOVE_SPEED  0.05f  
 
@@ -26,8 +26,6 @@ static void move(Player *player, float distance) {
     }
 }
 
-// Roterar spelarens riktning.
-// Positiv sin = sväng höger, negativ sin = sväng vänster.
 static void rotate(Player *player, float cos_value, float sin_value) {
     float old_dir_x = player->dir_x;
     float old_dir_y = player->dir_y;
