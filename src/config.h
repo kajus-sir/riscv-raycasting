@@ -17,6 +17,10 @@
 #define CEILING_COLOR  DARK_GRAY
 #define FLOOR_COLOR    GRAY
 
-#define CELL_SIZE (SCREEN_H / MAP_H)   // 240 / 12 = 20 pixlar per ruta
+// Player Size
+#define PLAYER_SIZE        5   // spelaren ritas som en 5x5-ruta
+#define DIRECTION_LENGTH  10    // hur lång riktningslinjen är (pixlar)
+
+#define CELL_SIZE (SCREEN_H / MAP_H)   
 
 #endif
