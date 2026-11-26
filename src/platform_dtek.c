@@ -16,6 +16,12 @@ void draw_rect(int start_x, int start_y, int width, int height, unsigned char co
     }
 }
 
+void draw_vline(int x, int start_y, int end_y, unsigned char color) {
+    for (int y = start_y; y < end_y; y++) {
+        pixel(x, y, color);
+    }
+}
+
 int get_sw(void){
   volatile int *sw = (volatile int *) 0x04000010;
   return *sw;
