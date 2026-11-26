@@ -57,3 +57,28 @@ int digit_to_segments(int digit) {
         default: return 0xFF;  // all segments off (blank)
     }
 }
+// ===== Timer (0x04000020, se TIMER.pdf) =====
+// Register: [0] status (TO), [1] control (ITO/CONT/START), [2] periodl, [3] periodh
+static volatile int *TIMER = (volatile int *) 0x04000020;
+
+#define TIMER_IRQ    16                       // mcause för timeravbrott på DTEK-V
+#define TICK_PERIOD  (30000000 / TICKS_PER_SEC - 1) // 30 MHz, perioden räknas som värde+1
+
+volatile unsigned int timer_ticks = 0;        // ökas av avbrottet, läses av spelloopen
+
+extern void enable_interrupt(void);           // boot.S
+
+void timer_init(void) {
+    TIMER[2] = TICK_PERIOD & 0xFFFF;          // periodl
+    TIMER[3] = (TICK_PERIOD >> 16) & 0xFFFF;  // periodh
+    TIMER[0] = 0;                             // nollställ ev. gammal TO-flagga
+    TIMER[1] = 0x7;                           // ITO + CONT + START
+    enable_interrupt();                       // sist, när allt annat är klart
+}
+
+void handle_interrupt(unsigned cause) {
+    if (cause == TIMER_IRQ) {
+        TIMER[0] = 0;                         // kvittera, annars avbryts vi direkt igen
+        timer_ticks++;
+    }
+}

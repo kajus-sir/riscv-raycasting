@@ -3,8 +3,6 @@
 #include "../dtekv-lib.h"
 #include "render.h"
 
-void handle_interrupt(unsigned cause) {}
-
 void test () {
     unsigned char colors[] = { RED, GREEN, BLUE, YELLOW, CYAN, MAGENTA, WHITE };
     int num_colors = sizeof(colors) / sizeof(colors[0]);
@@ -31,12 +29,22 @@ void test_wall_color () {
     }
 }
 
+// Räknar sekunder på lysdioderna. Ska öka med exakt 1 per sekund,
+// oavsett vad huvudloopen gör (avbrotten sköter tiden).
+void test_timer () {
+    timer_init();
+    while (1) {
+        set_leds(timer_ticks / TICKS_PER_SEC);
+    }
+}
+
 int main(void) {
     print("Hej fran DTEK-V!\n");
 
     // draw_map();
     // test();
     test_wall_color();
+    test_timer();
 
     while (1) { }
 }
