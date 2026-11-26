@@ -26,6 +26,10 @@
 #define SIDE_X  0   // korsade en vertikal linje -> väggen vetter öst/väst, full ljusstyrka
 #define SIDE_Y  1   // korsade en horisontell linje -> väggen vetter nord/syd, mörkare
 
-#define CELL_SIZE (SCREEN_H / MAP_H)   // 240 / 12 = 20 pixlar per ruta
+// Player Size
+#define PLAYER_SIZE        5   // spelaren ritas som en 5x5-ruta
+#define DIRECTION_LENGTH  10    // hur lång riktningslinjen är (pixlar)
+
+#define CELL_SIZE (SCREEN_H / MAP_H)   
 
 #endif

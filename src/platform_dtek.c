@@ -23,13 +23,13 @@ void draw_vline(int x, int start_y, int end_y, unsigned char color) {
 }
 
 int get_sw(void){
-  volatile int *sw = (volatile int *) 0x04000010;
-  return *sw;
+    volatile int *sw = (volatile int *) 0x04000010;
+    return *sw & 0x3FF;   // 10 switchar = bit 0-9
 }
 
 int get_btn(void){
-  volatile int *btn = (volatile int *) 0x040000d0;
-  return *btn;
+    volatile int *btn = (volatile int *) 0x040000d0;
+    return *btn & 0x1;    // 1 knapp = bit 0
 }
 
 void set_leds(int led_mask) {
