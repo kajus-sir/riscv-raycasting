@@ -16,6 +16,12 @@ void draw_rect(int start_x, int start_y, int width, int height, unsigned char co
     }
 }
 
+void draw_vline(int x, int start_y, int end_y, unsigned char color) {
+    for (int y = start_y; y < end_y; y++) {
+        pixel(x, y, color);
+    }
+}
+
 int get_sw(void){
     volatile int *sw = (volatile int *) 0x04000010;
     return *sw & 0x3FF;   // 10 switchar = bit 0-9
@@ -49,5 +55,30 @@ int digit_to_segments(int digit) {
         case 8: return 0x80;   // 0b10000000
         case 9: return 0x90;   // 0b10010000
         default: return 0xFF;  // all segments off (blank)
+    }
+}
+// ===== Timer (0x04000020, se TIMER.pdf) =====
+// Register: [0] status (TO), [1] control (ITO/CONT/START), [2] periodl, [3] periodh
+static volatile int *TIMER = (volatile int *) 0x04000020;
+
+#define TIMER_IRQ    16                       // mcause för timeravbrott på DTEK-V
+#define TICK_PERIOD  (30000000 / TICKS_PER_SEC - 1) // 30 MHz, perioden räknas som värde+1
+
+volatile unsigned int timer_ticks = 0;        // ökas av avbrottet, läses av spelloopen
+
+extern void enable_interrupt(void);           // boot.S
+
+void timer_init(void) {
+    TIMER[2] = TICK_PERIOD & 0xFFFF;          // periodl
+    TIMER[3] = (TICK_PERIOD >> 16) & 0xFFFF;  // periodh
+    TIMER[0] = 0;                             // nollställ ev. gammal TO-flagga
+    TIMER[1] = 0x7;                           // ITO + CONT + START
+    enable_interrupt();                       // sist, när allt annat är klart
+}
+
+void handle_interrupt(unsigned cause) {
+    if (cause == TIMER_IRQ) {
+        TIMER[0] = 0;                         // kvittera, annars avbryts vi direkt igen
+        timer_ticks++;
     }
 }

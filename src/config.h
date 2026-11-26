@@ -17,6 +17,15 @@
 #define CEILING_COLOR  DARK_GRAY
 #define FLOOR_COLOR    GRAY
 
+// ===== Väggtyper (värdena i map[][], 0 = tom ruta) =====
+#define WALL_RED    1
+#define WALL_GREEN  2
+#define WALL_BLUE   3
+
+// ===== Väggsidor (vilken rutnätslinje strålen träffade) =====
+#define SIDE_X  0   // korsade en vertikal linje -> väggen vetter öst/väst, full ljusstyrka
+#define SIDE_Y  1   // korsade en horisontell linje -> väggen vetter nord/syd, mörkare
+
 // Player Size
 #define PLAYER_SIZE        5   // spelaren ritas som en 5x5-ruta
 #define DIRECTION_LENGTH  10    // hur lång riktningslinjen är (pixlar)
